@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Info Lokasi Internet</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        body { background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .kartu { background: white; border-radius: 20px; padding: 35px; max-width: 420px; width: 100%; box-shadow: 0 15px 50px rgba(0,0,0,0.25); }
+        h1 { text-align: center; color: #0f2027; margin-bottom: 30px; font-size: 22px; }
+        .baris { padding: 14px 0; border-bottom: 1px solid #e0e0e0; }
+        .label { font-weight: bold; color: #444; display: inline-block; width: 110px; }
+        .nilai { color: #1a1a2e; }
+        .pesan { margin-top: 25px; padding: 15px; background: #e8f5e9; border-radius: 10px; color: #2e7d32; font-size: 13px; text-align: center; line-height: 1.5; }
+        .memuat { text-align: center; color: #777; padding: 30px; }
+    </style>
+</head>
+<body>
+    <div class="kartu">
+        <h1>🌐 Info Lokasi Internet</h1>
+        <div id="isi" class="memuat">Mengambil data...</div>
+        <div class="pesan">
+            💚 Hanya info publik dari jaringan internet<br>
+            Tidak melacak lokasi GPS perangkat
+        </div>
+    </div>
+
+    <script>
+        fetch("https://ipinfo.io/json")
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("isi").innerHTML = `
+                    <div class="baris"><span class="label">Alamat IP</span>: <span class="nilai">${data.ip || '-'}</span></div>
+                    <div class="baris"><span class="label">Kota</span>: <span class="nilai">${data.city || '-'}</span></div>
+                    <div class="baris"><span class="label">Wilayah</span>: <span class="nilai">${data.region || '-'}</span></div>
+                    <div class="baris"><span class="label">Negara</span>: <span class="nilai">${data.country || '-'}</span></div>
+                    <div class="baris"><span class="label">Penyedia</span>: <span class="nilai">${data.org || '-'}</span></div>
+                    <div class="baris"><span class="label">Zona Waktu</span>: <span class="nilai">${data.timezone || '-'}</span></div>
+                `;
+            })
+            .catch(() => {
+                document.getElementById("isi").innerHTML = `<p style="color:red;text-align:center;">Gagal memuat data</p>`;
+            });
+    </script>
+</body>
+</html>
